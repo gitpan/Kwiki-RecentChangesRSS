@@ -1,0 +1,33 @@
+Revision history for Kwiki-RecentChangesRSS
+
+0.01    2004/07/17
+        First version, released on an unsuspecting world.
+
+date: 2004/07/17 16:55:24;  author: peregrin;  state: Exp;  lines: +4 -1
+turned off warnings of redefined content_type subroutine
+
+date: 2004/07/17 00:02:09;  author: peregrin;  state: Exp;  lines: +35 -20
+minor code layout changes, better content-type override, ack ingy
+
+date: 2004/07/15 17:01:59;  author: peregrin;  state: Exp;  lines: +100 -13
+required and optional channel elments, with POD
+
+date: 2004/07/15 15:56:40;  author: peregrin;  state: Exp;  lines: +14 -24
+fix bug in item link URL, rename screen template, nominal 2.0 RSS
+
+date: 2004/07/14 20:58:42;  author: peregrin;  state: Exp;  lines: +11 -4
+move to new module layout and added default config rss.yaml
+
+date: 2004/07/14 19:49:36;  author: peregrin;  state: Exp;
+branches:  1.1.1;
+
+date: 2004/07/14 02:27:14;  author: peregrin;  state: Exp;  lines: +60 -57
+uses config.yaml, moved to RSS 1.0
+
+date: 2004/06/29 04:20:16;  author: peregrin;  state: Exp;  lines: +0 -2
+removed HTML comments from screen template makes the rdf a little better
+
+date: 2004/06/29 03:47:20;  author: peregrin;  state: Exp;
+branches:  1.1.1;
+Initial revision
+
