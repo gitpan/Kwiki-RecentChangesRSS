@@ -4,6 +4,8 @@ This is a Kwiki plugin, which adds a toolbar item to your Kwiki which
 gives you and RSS 2.0 feed of your wiki's recently changed pages.
 
 CHANGES
+0.05: Fixes [cpan #8829] <img> compliance.  Adds the ability to display
+      the entire page in the RSS feed.
 0.04: Fixes [cpan #7524] where the <link/> element broke in Kwiki 0.33.
       You should now use the 'rss_link' configuration setting to set the
       website URL.

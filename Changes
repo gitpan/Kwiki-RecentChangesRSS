@@ -1,5 +1,10 @@
 Revision history for Kwiki-RecentChangesRSS
 
+0.05   2005/12/11
+date: 2004/12/11 21:50:42;  author: peregrin;  state: Exp;  lines: +49 -8
+add rss_display_page feature, wrap description in CDATA.
+Minor fix: <img> element was not closed as per XHTML 1.1 ([cpan #8829])
+
 0.04   2004/08/30
 date: 2004/08/31 03:36:43;  author: peregrin;  state: Exp;  lines: +18 -10
 fix [cpan #7524] - use rss_link to build <link/> url instead of manually

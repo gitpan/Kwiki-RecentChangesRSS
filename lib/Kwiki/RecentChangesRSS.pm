@@ -1,4 +1,4 @@
-# $Id: RecentChangesRSS.pm,v 1.14 2004/08/31 03:46:45 peregrin Exp $
+# $Id: RecentChangesRSS.pm,v 1.16 2004/12/11 21:50:42 peregrin Exp $
 package Kwiki::RecentChangesRSS;
 use strict;
 use warnings;
@@ -6,7 +6,7 @@ use Kwiki::Plugin '-Base';
 use Kwiki::Installer '-base';
 use POSIX qw(strftime);
 use Time::Local;
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 const class_id        => 'RecentChangesRSS';
 const class_title     => 'RecentChangesRSS';
@@ -22,6 +22,9 @@ sub register {
 }
 sub RecentChangesRSS {
   use XML::RSS;
+
+  my $display_the_page = $self->config->rss_display_page;
+
   my %channel_info = (link           => $self->config->rss_link,
 		      copyright      => $self->config->rss_copyright,
 		      language       => $self->config->rss_language,
@@ -51,9 +54,28 @@ sub RecentChangesRSS {
   $ENV{SERVER_PROTOCOL} =~ m!^(\w+)/!;
   my $protocol = $1;
   foreach my $page (@$pages) {
-    $rss->add_item(title => $page->id,
+
+#
+# Because we are using RSS 2.0, we are forced to put the author/creator in
+# either the title or description.  Putting the author/creator in <author>
+# is not valid RSS 2.0 because it must include an email address, which we
+# currently don't have for each user.  Perhaps future versions of Kwiki
+# will force users to have an email address.
+# Note: RSS 1.0 does not have this restriction -- it can use <dc:creator>.
+#
+    my ($title, $description);
+    if ($display_the_page) {
+      $title = $page->id . " (last edited by " .
+               $page->metadata->edit_by . ")";
+      $description = '<![CDATA[' . $page->to_html . ']]>',
+    } else {
+      $title = $page->id;
+      $description = "Last edited by " . $page->metadata->edit_by;
+    }
+
+    $rss->add_item(title => $title,
+		   description => $description,
 		   link => $self->config->rss_link . '?' . $page->uri,
-		   description => "Last edited by " . $page->metadata->edit_by,
 		   pubDate => strftime("%a, %d %b %Y %T %Z",
 				       localtime($page->modified_time)),
 		  );
@@ -116,6 +138,12 @@ Add this line to the plugins file:
 Then glance over the settings in config/rss.yaml and the documentation
 below.  Add your settings to config.yaml.
 
+=head1 UPGRADING
+
+You should always run 'kwiki -update' after upgrading Kwiki::RecentChangesRSS,
+as typically there are new configuration options that need to be installed in
+config/rss.yaml.
+
 =head1 CONFIGURATION
 
 In config.yaml, following are necessary for proper functioning:
@@ -145,7 +173,16 @@ Included in this distribution is a sample icon, xml.png.  To use it, put
 
    rss_icon: xml.png
 
-in your config.yaml file.  If you have a better one, just put it in the top of your Kwiki directory.
+in your config.yaml file.  If you have a better one, just put it in
+the top of your Kwiki directory.
+
+=item rss_display_page
+
+This plugin defaults to a terse RSS 2.0 feed, where news reader will
+simply display the page title and who last edited it.  If you want to
+see the entire page, the following into your config.yaml file:
+
+   rss_display_page: 1
 
 =back
 
@@ -225,16 +262,21 @@ Not implemented.  Speficies the hours in which this feed should not be used.
 
 =item rss_skipDays
 
-Not implemented.  Speficies the days of the week in which this feed should not be used.
+Not implemented.  Speficies the days of the week in which this feed
+should not be used.
 
 =back
 
 =head1 ACKNOWLEDGEMENTS
 
-This is a modified version of Kwiki::RecentChanges by Brian
+This is a modified a private version of Kwiki::RecentChanges by Brian
 Ingerson. To fix [cpan #7524] bug, used website link method used by
 Brian's own version of Kwiki::RecentChangesRSS (developed
 independently of this module).
+
+Joon on #kwiki for noticing that the description should be wrapped in CDATA.
+
+David Jones for catching that <img> wasn't XHTML compliant.
 
 =head1 AUTHOR
 
@@ -255,7 +297,7 @@ rss_title: a title goes here
 rss_description: a short description goes here
 rss_link: http://configure.me/
 rss_docs: http://blogs.law.harvard.edu/tech/rss
-rss_generator: Kwiki::RecentChangesRSS/XML::RSS 0.03
+rss_generator: Kwiki::RecentChangesRSS/XML::RSS 0.05
 rss_depth: 7
 rss_language: en-US
 rss_copyright:
@@ -269,6 +311,7 @@ rss_rating:
 rss_textInput:
 rss_skipHours:
 rss_skipDays:
+rss_display_page: 0
 __template/tt2/rss_button.html__
 <!-- BEGIN rss_button.html -->
 <a href="[% script_name %]?action=RecentChangesRSS" accesskey="c" title="RSS">
@@ -277,7 +320,7 @@ __template/tt2/rss_button.html__
 <!-- END rss_button.html -->
 __template/tt2/rss_button_icon.html__
 <!-- BEGIN rss_button_icon.html -->
-<img src="[% rss_icon %]" alt="rss" >
+<img src="[% rss_icon %]" alt="rss" />
 <!-- END rss_button_icon.html -->
 __template/tt2/rss_screen.xml__
 [% xml %]
