@@ -1,7 +1,13 @@
-Kwiki-RecentChangesRSS 0.01
+Kwiki-RecentChangesRSS 0.02
 
 This is a Kwiki plugin, which adds a toolbar item to your Kwiki which
 gives you and RSS 2.0 feed of your wiki's recently changed pages.
+
+CHANGES
+
+0.02: Fixes bug which duplicated the preferences from Kwiki::RecentChanges,
+      added version number to <generator> XML output.
+0.01: Initial release.
 
 INSTALLATION
 

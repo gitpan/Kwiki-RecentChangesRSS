@@ -1,4 +1,4 @@
-# $Id: RecentChangesRSS.pm,v 1.9 2004/07/17 17:55:58 peregrin Exp $
+# $Id: RecentChangesRSS.pm,v 1.10 2004/07/20 22:31:54 peregrin Exp $
 package Kwiki::RecentChangesRSS;
 use strict;
 use warnings;
@@ -6,7 +6,7 @@ use Kwiki::Plugin '-Base';
 use Kwiki::Installer '-base';
 use POSIX qw(strftime);
 use Time::Local;
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 const class_id        => 'RecentChangesRSS';
 const class_title     => 'RecentChangesRSS';
@@ -19,30 +19,7 @@ sub register {
   $registry->add(toolbar  => 'rss_button',
 		 template => 'rss_button.html',
 		);
-  $registry->add(preference => 'rss_depth',
-		 object     => $self->rss_depth,
-		);
 }
-
-sub rss_depth {
-  my $p = $self->new_preference('recent_changes_depth');
-  $p->query('What time interval should "Recent Changes" display?');
-  $p->type('pulldown');
-  my $choices = [
-		 1 => 'Last 24 hours',
-		 2 => 'Last 2 Days',
-		 3 => 'Last 3 Days',
-		 7 => 'Last Week',
-		 14 => 'Last 2 Weeks',
-		 30 => 'Last Month',
-		 60 => 'Last 2 Months',
-		 90 => 'Last 3 Months',
-    ];
-  $p->choices($choices);
-  $p->default(7);
-  return $p;
-}
-
 sub RecentChangesRSS {
   use XML::RSS;
   my %channel_info = (link           => $self->config->rss_link,
@@ -261,8 +238,8 @@ rss_title: a title goes here
 rss_description: a short description goes here
 rss_link: a URL goes here
 rss_docs: http://blogs.law.harvard.edu/tech/rss
-rss_generator: Kwiki::RecentChangesRSS/XML::RSS
-rss_depth: 90
+rss_generator: Kwiki::RecentChangesRSS/XML::RSS 0.02
+rss_depth: 7
 rss_language: en-US
 rss_copyright:
 rss_managingEditor:

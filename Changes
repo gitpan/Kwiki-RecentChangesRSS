@@ -1,4 +1,9 @@
 Revision history for Kwiki-RecentChangesRSS
+0.02    2004/07/20
+
+date: 2004/07/20 22:31:54;  author: peregrin;  state: Exp;  lines: +4 -27
+removed rss_depth preference (not config option)
+added version number to rss_generator default
 
 0.01    2004/07/17
         First version, released on an unsuspecting world.
