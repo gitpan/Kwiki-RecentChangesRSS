@@ -1,10 +1,14 @@
-Kwiki-RecentChangesRSS 0.02
+Kwiki-RecentChangesRSS 0.03
 
 This is a Kwiki plugin, which adds a toolbar item to your Kwiki which
 gives you and RSS 2.0 feed of your wiki's recently changed pages.
 
 CHANGES
 
+0.03: An xml icon is now included. Turn it on by adding 'rss_icon: xml' to
+      you config.yaml after 'kwiki -update'.
+      Small bug fix if last updated page was before rss_depth.
+      Tested on Kwiki 0.32.
 0.02: Fixes bug which duplicated the preferences from Kwiki::RecentChanges,
       added version number to <generator> XML output.
 0.01: Initial release.

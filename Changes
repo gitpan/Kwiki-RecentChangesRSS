@@ -1,4 +1,10 @@
 Revision history for Kwiki-RecentChangesRSS
+0.03    2004/07/27
+
+date: 2004/07/27 19:45:48;  author: peregrin;  state: Exp;  lines: +23 -12
+now install xml.png file, pod updated, minor bug fix if last updated page was
+earlier that rss_depth.
+
 0.02    2004/07/20
 
 date: 2004/07/20 22:31:54;  author: peregrin;  state: Exp;  lines: +4 -27

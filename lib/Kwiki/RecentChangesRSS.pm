@@ -1,4 +1,4 @@
-# $Id: RecentChangesRSS.pm,v 1.10 2004/07/20 22:31:54 peregrin Exp $
+# $Id: RecentChangesRSS.pm,v 1.12 2004/07/27 19:51:27 peregrin Exp $
 package Kwiki::RecentChangesRSS;
 use strict;
 use warnings;
@@ -6,7 +6,7 @@ use Kwiki::Plugin '-Base';
 use Kwiki::Installer '-base';
 use POSIX qw(strftime);
 use Time::Local;
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 const class_id        => 'RecentChangesRSS';
 const class_title     => 'RecentChangesRSS';
@@ -61,20 +61,22 @@ sub RecentChangesRSS {
   }
   #
   # lastBuildDate is the time the content last changed, therefore the time of
-  # the latest wiki page
-  $rss->channel(lastBuildDate => 
+  # the latest wiki page...
+  # However $@pages is the array of pages since $depth * 1440 and so will be
+  # undefined if no page has changes since $depth * 1440.  Otherwise we skip
+  # it.
+  $rss->channel(lastBuildDate =>
 		strftime("%a, %d %b %Y %T %Z",
-			 localtime($pages->[0]->modified_time)));
+			 localtime($pages->[0]->modified_time))) if $pages->[0];
 
   # Override to set the correct Content-Type header
- { 
-    no warnings 'redefine'; 
-    eval "*Spoon::Cookie::content_type = sub {(-type=>'application/xml')};" 
-  } 
+  {
+    no warnings 'redefine';
+    eval "*Spoon::Cookie::content_type = sub {(-type=>'application/xml')};"
+  }
 
   $self->render_screen(xml          => $rss->as_string,
 		       screen_title => "Changes in the $label:",
-		       rss_icon     => $self->config->rss_icon,
 		      );
 
 }
@@ -127,7 +129,11 @@ The number of days you go back in time for recent changes.  Defaults to 7 days.
 
 =item rss_icon
 
-URL to an rss icon for the toolbar.  If not provided, you'll see the E<lt>IMG ALTE<gt> text of 'rss'.
+Included in this distribution is a sample icon, xml.png.  To use it, put
+
+   rss_icon: xml.png
+
+in your config.yaml file.  If you have a better one, just put it in the top of your Kwiki directory.
 
 =back
 
@@ -238,7 +244,7 @@ rss_title: a title goes here
 rss_description: a short description goes here
 rss_link: a URL goes here
 rss_docs: http://blogs.law.harvard.edu/tech/rss
-rss_generator: Kwiki::RecentChangesRSS/XML::RSS 0.02
+rss_generator: Kwiki::RecentChangesRSS/XML::RSS 0.03
 rss_depth: 7
 rss_language: en-US
 rss_copyright:
@@ -252,7 +258,6 @@ rss_rating:
 rss_textInput:
 rss_skipHours:
 rss_skipDays:
-rss_icon:
 __template/tt2/rss_button.html__
 <!-- BEGIN rss_button.html -->
 <a href="[% script_name %]?action=RecentChangesRSS" accesskey="c" title="RSS">
@@ -265,3 +270,9 @@ __template/tt2/rss_button_icon.html__
 <!-- END rss_button_icon.html -->
 __template/tt2/rss_screen.xml__
 [% xml %]
+__xml.png__
+iVBORw0KGgoAAAANSUhEUgAAACQAAAAOBAMAAAC1GaP7AAAAMFBMVEU9GgL1sYOeQgLmhkL22sfd
+XQfcdC/7yaf+/Pt+MgLDUgbupHL+gi7+ZgP+lE/OZiLJkrvQAAAAAWJLR0QAiAUdSAAAAJlJREFU
+eNpjdDdgQAX/Gd9+QBP6w8SAAYBC/1YzcBdYr2eYvYG7ACTEAhQ98JVb9vRvBoG/DD+gqhga2Jmd
+GRhbYBqBqhjEWPZfYvgg/kEIbhYQsDYw2As0IIxn+PXHCOic/xuQhBYYsScw/A8GCv0xEYA4guf9
+BCCLGajRvdwA4ohrN/de7bjAwKrwVYmhg4EBi4cYFDA8BACwrCv4QvvgfAAAAABJRU5ErkJggg==
