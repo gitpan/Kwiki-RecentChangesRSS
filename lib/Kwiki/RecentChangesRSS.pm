@@ -1,4 +1,4 @@
-# $Id: RecentChangesRSS.pm,v 1.16 2004/12/11 21:50:42 peregrin Exp $
+# $Id: RecentChangesRSS.pm,v 1.20 2005/02/26 01:02:30 peregrin Exp $
 package Kwiki::RecentChangesRSS;
 use strict;
 use warnings;
@@ -6,7 +6,7 @@ use Kwiki::Plugin '-Base';
 use Kwiki::Installer '-base';
 use POSIX qw(strftime);
 use Time::Local;
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 const class_id        => 'RecentChangesRSS';
 const class_title     => 'RecentChangesRSS';
@@ -42,9 +42,7 @@ sub RecentChangesRSS {
     $rss->channel($key => $value);
   }
 
-  my $depth_object = $self->preferences->recent_changes_depth;
   my $depth = $self->config->rss_depth;
-  my $label = +{@{$depth_object->choices}}->{$depth};
 
   my $pages;
   @$pages = sort {
@@ -65,11 +63,11 @@ sub RecentChangesRSS {
 #
     my ($title, $description);
     if ($display_the_page) {
-      $title = $page->id . " (last edited by " .
+      $title = $page->title . " (last edited by " .
                $page->metadata->edit_by . ")";
       $description = '<![CDATA[' . $page->to_html . ']]>',
     } else {
-      $title = $page->id;
+      $title = $page->title;
       $description = "Last edited by " . $page->metadata->edit_by;
     }
 
@@ -97,7 +95,8 @@ sub RecentChangesRSS {
   }
 
   $self->render_screen(xml          => $rss->as_string,
-		       screen_title => "Changes in the $label:",
+		       screen_title => "Changes in the last $depth " .
+		                        $depth == 1 ? "day" : "days",
 		      );
 
 }
@@ -274,7 +273,7 @@ Ingerson. To fix [cpan #7524] bug, used website link method used by
 Brian's own version of Kwiki::RecentChangesRSS (developed
 independently of this module).
 
-Joon on #kwiki for noticing that the description should be wrapped in CDATA.
+Joon and ambs on #kwiki for finding UTF-8 problems.
 
 David Jones for catching that <img> wasn't XHTML compliant.
 

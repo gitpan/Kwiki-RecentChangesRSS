@@ -1,5 +1,9 @@
 Revision history for Kwiki-RecentChangesRSS
 
+0.06 2005/02/25
+The page title in the RSS output now handles UTF-8 [cpan #11316,#11339].
+Removed the need for Kwiki::UserPreferences.
+  
 0.05   2005/12/11
 date: 2004/12/11 21:50:42;  author: peregrin;  state: Exp;  lines: +49 -8
 add rss_display_page feature, wrap description in CDATA.
