@@ -1,4 +1,4 @@
-# $Id: RecentChangesRSS.pm,v 1.12 2004/07/27 19:51:27 peregrin Exp $
+# $Id: RecentChangesRSS.pm,v 1.14 2004/08/31 03:46:45 peregrin Exp $
 package Kwiki::RecentChangesRSS;
 use strict;
 use warnings;
@@ -6,7 +6,7 @@ use Kwiki::Plugin '-Base';
 use Kwiki::Installer '-base';
 use POSIX qw(strftime);
 use Time::Local;
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 const class_id        => 'RecentChangesRSS';
 const class_title     => 'RecentChangesRSS';
@@ -52,8 +52,7 @@ sub RecentChangesRSS {
   my $protocol = $1;
   foreach my $page (@$pages) {
     $rss->add_item(title => $page->id,
-		   link => "\L$protocol" . "://" . $ENV{SERVER_NAME} .
-		           $page->hub->config->script_name . "?" . $page->id,
+		   link => $self->config->rss_link . '?' . $page->uri,
 		   description => "Last edited by " . $page->metadata->edit_by,
 		   pubDate => strftime("%a, %d %b %Y %T %Z",
 				       localtime($page->modified_time)),
@@ -95,7 +94,7 @@ Provides an RSS 2.0 feed of your recent changes.
 
 =head1 REQUIRES
 
-   Kwiki 0.31
+   Kwiki 0.33
    XML::RSS
 
 =head1 INSTALLATION
@@ -123,6 +122,19 @@ In config.yaml, following are necessary for proper functioning:
 
 =over
 
+=item rss_link
+
+The URL of the site this feed applies to.  Don't include the default
+"script_name" set in your config.yaml or config/config.yaml.
+
+For example, if your URL looks like
+
+ http://speedysite.com/cgi-bin/kwiki/index.cgi?HomePage
+
+then use
+
+ http://speedysite.com/cgi-bin/kwiki/
+
 =item rss_depth
 
 The number of days you go back in time for recent changes.  Defaults to 7 days.
@@ -144,10 +156,6 @@ The E<lt>channelE<gt> block of the feed requires the following elements to be de
 =item rss_title
 
 The title of your website.
-
-=item rss_link
-
-The URL of the site this feed applies to. 
 
 =item rss_description
 
@@ -223,7 +231,10 @@ Not implemented.  Speficies the days of the week in which this feed should not b
 
 =head1 ACKNOWLEDGEMENTS
 
-This is a modified version of Kwiki::RecentChanges by Brian Ingerson.
+This is a modified version of Kwiki::RecentChanges by Brian
+Ingerson. To fix [cpan #7524] bug, used website link method used by
+Brian's own version of Kwiki::RecentChangesRSS (developed
+independently of this module).
 
 =head1 AUTHOR
 
@@ -242,7 +253,7 @@ See http://www.perl.com/perl/misc/Artistic.html
 __config/rss.yaml__
 rss_title: a title goes here
 rss_description: a short description goes here
-rss_link: a URL goes here
+rss_link: http://configure.me/
 rss_docs: http://blogs.law.harvard.edu/tech/rss
 rss_generator: Kwiki::RecentChangesRSS/XML::RSS 0.03
 rss_depth: 7

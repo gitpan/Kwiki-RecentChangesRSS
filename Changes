@@ -1,4 +1,9 @@
 Revision history for Kwiki-RecentChangesRSS
+
+0.04   2004/08/30
+date: 2004/08/31 03:36:43;  author: peregrin;  state: Exp;  lines: +18 -10
+fix [cpan #7524] - use rss_link to build <link/> url instead of manually
+
 0.03    2004/07/27
 
 date: 2004/07/27 19:45:48;  author: peregrin;  state: Exp;  lines: +23 -12

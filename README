@@ -4,7 +4,9 @@ This is a Kwiki plugin, which adds a toolbar item to your Kwiki which
 gives you and RSS 2.0 feed of your wiki's recently changed pages.
 
 CHANGES
-
+0.04: Fixes [cpan #7524] where the <link/> element broke in Kwiki 0.33.
+      You should now use the 'rss_link' configuration setting to set the
+      website URL.
 0.03: An xml icon is now included. Turn it on by adding 'rss_icon: xml' to
       you config.yaml after 'kwiki -update'.
       Small bug fix if last updated page was before rss_depth.
