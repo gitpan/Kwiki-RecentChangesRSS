@@ -12,6 +12,7 @@ WriteMakefile(
         'Test::More' => 0,
         'XML::RSS'   => 0,
         'Kwiki'      => 0.33,
+        'Spiffy'     => 0.24,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'Kwiki-RecentChangesRSS-*' },

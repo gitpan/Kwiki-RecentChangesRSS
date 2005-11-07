@@ -1,5 +1,10 @@
 Revision history for Kwiki-RecentChangesRSS
 
+0.07 2005/11/06
+Changed method of setting content_type [cpan #13854] which broke between
+Spiffy 0.22 and 0.24.
+Code reformatted using perltidy.
+
 0.06 2005/02/25
 The page title in the RSS output now handles UTF-8 [cpan #11316,#11339].
 Removed the need for Kwiki::UserPreferences.

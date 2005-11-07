@@ -4,6 +4,7 @@ This is a Kwiki plugin, which adds a toolbar item to your Kwiki which
 gives you and RSS 2.0 feed of your wiki's recently changed pages.
 
 CHANGES
+0.07  Fixes [cpan #13854] where the content_type was broken by a Spiffy update.
 0.06  Fixes [cpan #11316,#11339] where the page title was improperly displaying
       UTF-8.  No longer requires Kwiki::UserPreferences.
 0.05: Fixes [cpan #8829] <img> compliance.  Adds the ability to display
